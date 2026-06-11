@@ -1,0 +1,38 @@
+! ============================================
+! CONFIGURACION SWITCH - VLAN SETUP
+! Proyecto: Red Empresarial MAKISHOP
+! ============================================
+
+enable
+configure terminal
+
+! Crear VLANs
+vlan 10
+ name VENTAS
+vlan 20
+ name ADMINISTRACION
+vlan 30
+ name SOPORTE
+vlan 99
+ name MANAGEMENT
+
+! Configurar puertos de acceso
+interface FastEthernet0/1
+ switchport mode access
+ switchport access vlan 10
+
+interface FastEthernet0/2
+ switchport mode access
+ switchport access vlan 20
+
+interface FastEthernet0/3
+ switchport mode access
+ switchport access vlan 30
+
+! Configurar puerto trunk
+interface GigabitEthernet0/1
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30,99
+
+end
+write memory

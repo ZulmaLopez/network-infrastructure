@@ -1,0 +1,49 @@
+! ============================================
+! CONFIGURACION ROUTER - INTER-VLAN + HSRP
+! Proyecto: Red Empresarial MAKISHOP
+! ============================================
+
+enable
+configure terminal
+
+! Subinterfaces para Inter-VLAN Routing
+interface GigabitEthernet0/0.10
+ encapsulation dot1Q 10
+ ip address 192.168.10.1 255.255.255.0
+ standby 10 ip 192.168.10.254
+ standby 10 priority 110
+ standby 10 preempt
+
+interface GigabitEthernet0/0.20
+ encapsulation dot1Q 20
+ ip address 192.168.20.1 255.255.255.0
+ standby 20 ip 192.168.20.254
+ standby 20 priority 110
+ standby 20 preempt
+
+interface GigabitEthernet0/0.30
+ encapsulation dot1Q 30
+ ip address 192.168.30.1 255.255.255.0
+ standby 30 ip 192.168.30.254
+ standby 30 priority 110
+ standby 30 preempt
+
+! Configuracion DHCP
+ip dhcp pool VENTAS
+ network 192.168.10.0 255.255.255.0
+ default-router 192.168.10.254
+ dns-server 8.8.8.8
+
+ip dhcp pool ADMINISTRACION
+ network 192.168.20.0 255.255.255.0
+ default-router 192.168.20.254
+ dns-server 8.8.8.8
+
+! Cisco CME - Telefonia IP
+telephony-service
+ max-ephones 10
+ max-dn 20
+ ip source-address 192.168.10.1 port 2000
+
+end
+write memory
